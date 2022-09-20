@@ -3,7 +3,7 @@ import threading
 import sys
 
 HEADER = 64
-PORT = 5050
+PORT = 8080
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
@@ -38,7 +38,7 @@ def start():
         conn, addr = server.accept()
         thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
-        print("[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
+        print("[ACTIVE CONNECTIONS] {0}".format(threading.activeCount() - 1))
 
 
 print("[STARTING] server is starting...")
