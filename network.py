@@ -1,42 +1,29 @@
+import threading
 import socket
-from _thread import *
 
-class Network():
+def main():
 
-    def reciever(self):
-        while True:
-            data = self.client.recv(4096)
-            self.last_response = data.decode()
-            if(self.last_response.startswith("play")):
-                if self.last_response.split("/")[1] == "ready":
-                    self.ready = True
-                else:
-                    self.ready = False
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def __init__(self):
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server = "192.168.1.105"
-        self.port = 5555
-        self.addr = (self.server,self.port)
-        self.ready = False
-        self.id = self.connect()
-        self.last_response = ""
-        start_new_thread(self.reciever, ())
+    try:
+        client.connect(('localhost', 7777)) # trocar localhost por ip do servidor
+    except:
+        return print('Não conectado ao servidor')
 
-    def connect(self):
+
+def receiveMessages(client):
+    while True:
         try:
-            self.client.connect(self.addr)
-            return self.client.recv(2048).decode()
+            msg = client.recv(2048).decode('utf-8') #(trocar) para receber informações tabuleiro att
         except:
-            pass
+            print('Não está conectado no servidor!')
+            client.close()
+            break
 
-
-    def send(self, msg):
-        # print("enviou: " + msg.decode())
+def sendMessages(client):
+    while True:
         try:
-            self.client.send(msg)
-        except socket.error as e:
-            print(e)
-
-    def close(self):
-        self.client.close()
+            msg = input() #(trocar) para enviar as informações da jogada do jogador
+            client.send(msg.encode)
+        except:
+            return
