@@ -6,7 +6,7 @@ def main():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
-        client.connect(('localhost', 7777)) # trocar localhost por ip do servidor
+        client.connect('192.168.1.65', 5050) # trocar localhost por ip do servidor
     except:
         return print('Não conectado ao servidor')
 
