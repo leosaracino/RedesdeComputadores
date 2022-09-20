@@ -1,49 +1,45 @@
 import socket
-from _thread import *
+import threading
 import sys
 
-server = "192.168.1.105"
-port = 5050
+HEADER = 64
+PORT = 5050
+SERVER = socket.gethostbyname(socket.gethostname())
+ADDR = (SERVER, PORT)
+FORMAT = 'utf-8'
+DISCONNECT_MESSAGE = "!DISCONNECT"
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(ADDR)
 
-try:
-    s.bind((server, port))
-except socket.error as e:
-    print(e)
+def handle_client(conn, addr):
+    print("[NEW CONNECTION] {addr} connected".format(addr = addr))
 
-s.listen(2)
+    connected = True
+    while connected:
+        msg_length = conn.recv(HEADER).decode(FORMAT)
+        if msg_length:
+            msg_length = int(msg_length)
+            msg = conn.recv(msg_length).decode(FORMAT)
+            if msg == DISCONNECT_MESSAGE:
+                connected = False
 
-print("Wating connection...")
+            print("[{addr}] {msg}".format(addr = addr, msg = msg))
+            conn.send("Msg received".encode(FORMAT))
 
-connections = []
-def threadead_client(conn, id):
-    while True:
-        try:
-            data = conn.recv(4096)#conexao recebe
-
-            if not data:
-                print("Disconnected")
-                break
-            
-            if(id == 1):#se o id é 1, então tem que mandar pra conexao 2 e viceversa
-                print("sendto: ", id)
-                connections[1].send(data)
-            else:
-                print("sendto: ", id)
-                connections[0].send(data)
-
-        except:
-            break
-    
     conn.close()
+        
 
-n_player = 1
-while True:
-    conn,addr = s.accept()
-    n_connections = len(connections) 
-    if(n_connections < 2):
-        conn.send(str.encode(f"player:{n_connections+1}"))
-        connections.append(conn)
-        print('conected to: ', addr)
-        start_new_thread(threadead_client, (conn, n_connections+1,))
+def start():
+    server.listen(2)
+   
+    print('[LISTENING] Server is listening on {SERVER} '.format(SERVER=SERVER))
+    while True:
+        conn, addr = server.accept()
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread.start()
+        print("[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
+
+
+print("[STARTING] server is starting...")
+start()
