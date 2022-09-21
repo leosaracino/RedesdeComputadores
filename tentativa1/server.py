@@ -11,6 +11,7 @@ DISCONNECT_MESSAGE = "!DISCONNECT"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
+clientes = []
 
 def handle_client(conn, addr):
     print("[NEW CONNECTION] {addr} connected".format(addr = addr))
@@ -38,8 +39,9 @@ def start():
         conn, addr = server.accept()
         thread = threading.Thread(target=handle_client, args=(conn, addr))
         thread.start()
-        print("[ACTIVE CONNECTIONS] {0}".format(threading.activeCount() - 1))
-
+        print("[ACTIVE CONNECTIONS] {0}".format(threading.active_count() - 1))
+        
+        clientes.append(addr)
 
 print("[STARTING] server is starting...")
 start()
