@@ -244,8 +244,7 @@ while paresEncontrados < totalDePares:
     while True:
 
         # Imprime status do jogo
-        teste = imprimeStatus(tabuleiro, placar, vez)
-        client.send(teste.encode("utf-8"))
+        imprimeStatus(tabuleiro, placar, vez)
 
         # Solicita coordenadas da primeira peca.
         coordenadas = leCoordenada(dim)
@@ -328,33 +327,4 @@ if len(vencedores) > 1:
     sys.stdout.write("\n")
 
 else:
-
-    print("Jogador {0} foi o vencedor!".format(vencedores[0] + 1))
-
-def messagesTreatment(client):
-    while True:
-        try:
-            msg = client.recv(2048)
-            broadcast(msg, client)
-        except:
-            deleteClient(client)
-            break
-
-
-def broadcast(msg, client):
-    for clientItem in clients:
-        if clientItem != client:
-            try:
-                clientItem.send(msg)
-            except:
-                deleteClient(clientItem)
-
-
-def deleteClient(client):
-    clients.remove(client)
-
-
-
-
-main()
-
+     print("Jogador {0} foi o vencedor!".format(vencedores[0] + 1))
