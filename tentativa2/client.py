@@ -7,7 +7,7 @@ def main():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
-        client.connect(('192.168.1.65 ', 7777))
+        client.connect(('25.66.155.252', 53))
     except:
         print('\nN conectou!\n')
         return 

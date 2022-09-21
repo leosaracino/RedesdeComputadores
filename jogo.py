@@ -191,27 +191,27 @@ def imprimeStatus(tabuleiro, placar, vez):
 # em caso de sucesso, ou False em caso de erro.
 def leCoordenada(dim):
 
-    input = raw_input("Especifique uma peca: ")
+    x = input("Especifique uma peca: ")
 
     try:
-        i = int(input.split(' ')[0])
-        j = int(input.split(' ')[1])
+        i = int(x.split(' ')[0])
+        j = int(x.split(' ')[1])
     except ValueError:
         print("Coordenadas invalidas! Use o formato \"i j\" (sem aspas),")
         print("onde i e j sao inteiros maiores ou iguais a 0 e menores que {0}").format(dim)
-        raw_input("Pressione <enter> para continuar...")
+        input("Pressione <enter> para continuar...")
         return False
 
     if i < 0 or i >= dim:
 
         print("Coordenada i deve ser maior ou igual a zero e menor que {0}").format(dim)
-        raw_input("Pressione <enter> para continuar...")
+        input("Pressione <enter> para continuar...")
         return False
 
     if j < 0 or j >= dim:
 
         print("Coordenada j deve ser maior ou igual a zero e menor que {0}").format(dim)
-        raw_input("Pressione <enter> para continuar...")
+        input("Pressione <enter> para continuar...")
         return False
 
     return (i, j)
@@ -262,7 +262,7 @@ while paresEncontrados < totalDePares:
         if abrePeca(tabuleiro, i1, j1) == False:
 
             print("Escolha uma peca ainda fechada!")
-            raw_input("Pressione <enter> para continuar...")
+            input("Pressione <enter> para continuar...")
             continue
 
         break 
@@ -284,7 +284,7 @@ while paresEncontrados < totalDePares:
         if abrePeca(tabuleiro, i2, j2) == False:
 
             print("Escolha uma peca ainda fechada!")
-            raw_input("Pressione <enter> para continuar...")
+            input("Pressione <enter> para continuar...")
             continue
 
         break 
